@@ -29,9 +29,25 @@ def home():
 
 	return render_template('index.html', entries = entries)
 
-@app.route('/welcome')
-def welcome():
-	return render_template('welcome.html')
+@app.route('/newentry',methods = ['GET','POST'])
+@login_required
+def newEntry():
+	error = None
+	if request.method == 'POST':
+		g.db = connect_db()
+		# cur = g.db.execute('DECLARE @entry_title TEXT')
+		title=request.form['entry_title']
+		print title
+		body=request.form['entry_body']
+		print body 
+        # cur = g.db.execute('SET @entry_title='+ title)
+        # cur = g.db.execute('DECLARE @entry_body TEXT')
+        # cur = g.db.execute('SET @entry_body = request.form['entry_body']')
+		cur = g.db.execute('INSERT INTO entry VALUES(title, body, CURRENT_TIMESTAMP)')
+		return redirect(url_for('home'))
+	return render_template('newEntry.html', error = error)
+	
+
 
 @app.route('/login', methods = ['GET','POST'])
 def login():

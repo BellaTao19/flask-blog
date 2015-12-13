@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Blog </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/foundation.min.css" rel="stylesheet" media="screen">
+  </head>
+
+  <body>
+   <div class="row">
+        <div class="large-12 columns">
+          <div class="nav-bar right">
+           <ul class="button-group">
+             <li><a href="/" class="button">Home</a></li>
+             <li><a href="#" class="button">My Post</a></li>
+             <li><a href="/newentry" class="button">New Entry</a></li>
+             <li><a href="/logout" class="button">Logout</a></li>
+            </ul>
+          </div>
+          <h1>Blog <small>This is my blog. It's awesome.</small></h1>
+          <hr/>
+        </div>
+      </div>
+
+
+<style type="text/css">
+        textarea
+       {
+         border:1px solid #999999;
+         width:100%;
+         margin:5px 0;
+         padding:3px;
+}
+</style>
+
+<div class="container">
+  <div class="row">
+    <div class="span12">
+      <div  class="well">
+        <form method="post">
+            <h2>Add new entry</h2>
+
+            <p>Title:<br />
+            <input type="text" name="entry_title" value="{{request.form.entry_title}}"/>
+            </p>
+            <p>Body:<br />
+            <textarea name="entry_body" rows="20" cols="120" style="resize:none;" value="{{request.form.entry_body}}"></textarea>
+            </p>
+            <input type="submit" value="Submit" />
+            </form>
+            {% if error %}
+                 <p class="error"><strong>ERROR: </strong> {{error}} </p>
+            {% endif %}
+
+            {% for message in get_flashed_messages() %}
+                   {{message}}
+            {% endfor %}
+        </div>
+    </div>
+  </div>
+</div>
+
+
+    <footer class="row">
+        <div class="large-12 columns">
+          <hr/>
+          <div class="row">
+            <div class="large-6 columns">
+              <p>© 2015 Copyright DreamCrops International</p>
+            </div>
+            <div class="large-6 columns">
+              <ul class="inline-list right">
+                <li><a href="/">Home</a></li>
+                <li><a href="#">My Post</a></li>
+                <li><a href="/newentry">New Entry</a></li>
+                <li><a href="/logout">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+  
+  
+</html>
