@@ -34,17 +34,25 @@ def home():
 def newEntry():
 	error = None
 	if request.method == 'POST':
-		g.db = connect_db()
-		# cur = g.db.execute('DECLARE @entry_title TEXT')
+		conn = sqlite3.connect("./blog.db")
+		cursor = conn.cursor()
+		# g.db = connect_db()
 		title=request.form['entry_title']
-		print title
+		# print title
 		body=request.form['entry_body']
+		# print body 
+		sql = "INSERT INTO entry(entry_title,entry_body,entry_date) VALUES(\"{0}\", \"{1}\",CURRENT_TIMESTAMP)".format(title, body)
+		print sql
+		# cur = g.db.execute(sql)
+		cursor.execute(sql)
+		# g.db.close()
+		conn.close()
+	  
+		# cur = g.db.execute('INSERT INTO entry(entry_title,entry_body,entry_date) VALUES("testing","testing is good",CURRENT_TIMESTAMP)')
+		print title
 		print body 
-        # cur = g.db.execute('SET @entry_title='+ title)
-        # cur = g.db.execute('DECLARE @entry_body TEXT')
-        # cur = g.db.execute('SET @entry_body = request.form['entry_body']')
-		cur = g.db.execute('INSERT INTO entry VALUES(title, body, CURRENT_TIMESTAMP)')
 		return redirect(url_for('home'))
+
 	return render_template('newEntry.html', error = error)
 	
 
