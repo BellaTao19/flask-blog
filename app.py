@@ -10,7 +10,7 @@ app.database = "blog.db"
 
 def login_required(f):
 	@wraps(f)
-	def wrap(*args, **kwargs): 
+	def wrap(*args, **kwargs):
 	    if 'logged_in' in session:
 	    	return f(*args, **kwargs)
 	    else:
@@ -18,7 +18,7 @@ def login_required(f):
 	        return redirect(url_for('login'))
 	return wrap
 
-#link function to url 	
+#link function to url
 @app.route('/')
 @login_required
 def home():
@@ -34,27 +34,21 @@ def home():
 def newEntry():
 	error = None
 	if request.method == 'POST':
-		conn = sqlite3.connect("./blog.db")
-		cursor = conn.cursor()
-		# g.db = connect_db()
 		title=request.form['entry_title']
-		# print title
 		body=request.form['entry_body']
-		# print body 
+
+		conn = sqlite3.connect("./blog.db")
+
 		sql = "INSERT INTO entry(entry_title,entry_body,entry_date) VALUES(\"{0}\", \"{1}\",CURRENT_TIMESTAMP)".format(title, body)
-		print sql
-		# cur = g.db.execute(sql)
-		cursor.execute(sql)
-		# g.db.close()
+
+		conn.execute(sql)
+		conn.commit()
+
 		conn.close()
-	  
-		# cur = g.db.execute('INSERT INTO entry(entry_title,entry_body,entry_date) VALUES("testing","testing is good",CURRENT_TIMESTAMP)')
-		print title
-		print body 
 		return redirect(url_for('home'))
 
 	return render_template('newEntry.html', error = error)
-	
+
 
 
 @app.route('/login', methods = ['GET','POST'])
@@ -83,4 +77,3 @@ def connect_db():
 
 if __name__ == '__main__':
      app.run(debug = True)
-
